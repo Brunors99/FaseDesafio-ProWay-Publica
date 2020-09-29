@@ -48,6 +48,7 @@ public class Main extends JFrame {
 	 * Create the frame.
 	 */
 	public Main() {
+		setUndecorated(true);
 		/*---------------------------------------- Torna possivel a movimentacao do JFrame ----------------------------------------*/
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -89,19 +90,6 @@ public class Main extends JFrame {
 		image.setIcon(new ImageIcon(Main.class.getResource("/images/basketball-court.jpg")));
 		imagePresentation.add(image);
 		
-		/*---------------------------------------- Botao de saida ----------------------------------------*/
-		
-		JLabel exit_btn = new JLabel("X");
-		exit_btn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.exit(0);
-			}});
-		exit_btn.setHorizontalAlignment(SwingConstants.CENTER);
-		exit_btn.setFont(new Font("Tahoma", Font.BOLD, 20));
-		exit_btn.setBounds(869, 0, 43, 34);
-		mainPane.add(exit_btn);
-		
 		/*------------------------------------------------------------------------*/
 		
 		JLabel title = new JLabel("Seja Bem-Vindo ao ScoreBasket!");
@@ -120,14 +108,11 @@ public class Main extends JFrame {
 		btnNewGame.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				
-				
+				AddGame addGame = new AddGame();
+				addGame.setVisible(true); 
+				setVisible(false);
 			}
 		});
-		
-		
-		/*------------------------------------------------------------------------*/
-		
 		
 		btnNewGame.setFocusPainted(false);
 		btnNewGame.setForeground(SystemColor.text);
@@ -135,6 +120,8 @@ public class Main extends JFrame {
 		btnNewGame.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnNewGame.setBounds(400, 200, 244, 42);
 		mainPane.add(btnNewGame);
+		
+		/*------------------------------------------------------------------------*/
 		
 		JButton btnListOfGames = new JButton("Listar os campeonatos");
 		btnListOfGames.setForeground(SystemColor.text);
@@ -152,7 +139,7 @@ public class Main extends JFrame {
 		btnDeleteGame.setBounds(400, 438, 244, 42);
 		mainPane.add(btnDeleteGame);
 		
-		JButton btnModifyGame = new JButton("Alterar dados de um campeonato");
+		JButton btnModifyGame = new JButton("Acessar um campeonato");
 		btnModifyGame.setForeground(SystemColor.text);
 		btnModifyGame.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnModifyGame.setFocusPainted(false);
@@ -160,10 +147,23 @@ public class Main extends JFrame {
 		btnModifyGame.setBounds(400, 359, 244, 42);
 		mainPane.add(btnModifyGame);
 		
+		JButton btnExit = new JButton("X");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnExit.setFocusable(false);
+		btnExit.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnExit.setForeground(Color.WHITE);
+		btnExit.setBackground(Color.RED);
+		btnExit.setBounds(849, 0, 59, 36);
+		mainPane.add(btnExit);
+		
 		JLabel version = new JLabel("v1.0");
 		version.setVerticalAlignment(SwingConstants.BOTTOM);
 		version.setHorizontalAlignment(SwingConstants.RIGHT);
-		version.setBounds(835, 530, 67, 14);
+		version.setBounds(855, 538, 53, 14);
 		mainPane.add(version);
 	}
 }
