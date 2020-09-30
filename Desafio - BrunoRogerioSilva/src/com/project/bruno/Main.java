@@ -124,6 +124,14 @@ public class Main extends JFrame {
 		/*------------------------------------------------------------------------*/
 		
 		JButton btnListOfGames = new JButton("Listar os campeonatos");
+		btnListOfGames.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListGame listGame = new ListGame();
+				listGame.setVisible(true);
+				setVisible(false);
+			}
+		});
+		
 		btnListOfGames.setForeground(SystemColor.text);
 		btnListOfGames.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnListOfGames.setFocusPainted(false);
@@ -131,21 +139,35 @@ public class Main extends JFrame {
 		btnListOfGames.setBounds(400, 279, 244, 42);
 		mainPane.add(btnListOfGames);
 		
-		JButton btnDeleteGame = new JButton("Apagar um campeonato");
-		btnDeleteGame.setForeground(SystemColor.text);
-		btnDeleteGame.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnDeleteGame.setFocusPainted(false);
-		btnDeleteGame.setBackground(SystemColor.textHighlight);
-		btnDeleteGame.setBounds(400, 438, 244, 42);
-		mainPane.add(btnDeleteGame);
-		
 		JButton btnModifyGame = new JButton("Acessar um campeonato");
+		btnModifyGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AcessGame acessGame = new AcessGame();
+				acessGame.setVisible(true);
+				setVisible(false);
+			}
+		});
 		btnModifyGame.setForeground(SystemColor.text);
 		btnModifyGame.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnModifyGame.setFocusPainted(false);
 		btnModifyGame.setBackground(SystemColor.textHighlight);
 		btnModifyGame.setBounds(400, 359, 244, 42);
 		mainPane.add(btnModifyGame);
+		
+		JButton btnDeleteGame = new JButton("Apagar um campeonato");
+		btnDeleteGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DeleteGame deleteGame = new DeleteGame();
+				deleteGame.setVisible(true);
+				setVisible(false);
+			}
+		});
+		btnDeleteGame.setForeground(SystemColor.text);
+		btnDeleteGame.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnDeleteGame.setFocusPainted(false);
+		btnDeleteGame.setBackground(SystemColor.textHighlight);
+		btnDeleteGame.setBounds(400, 438, 244, 42);
+		mainPane.add(btnDeleteGame);
 		
 		JButton btnExit = new JButton("X");
 		btnExit.addActionListener(new ActionListener() {
