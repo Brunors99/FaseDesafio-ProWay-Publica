@@ -1,8 +1,6 @@
 package com.project.bruno;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,19 +14,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import java.awt.ScrollPane;
-import javax.swing.JList;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.MatteBorder;
 
 public class ListGame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel listGamePane;
 	private int xx,xy;
 
@@ -100,14 +97,16 @@ public class ListGame extends JFrame {
 		listGamePane.add(title);
 		
 		JScrollPane scrollList = new JScrollPane();
+		scrollList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, new Color(255, 255, 255), null, new Color(255, 255, 255), null));
 		scrollList.setViewportBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		scrollList.setBounds(10, 95, 545, 308);
 		listGamePane.add(scrollList);
 		
 		JTextArea textList = new JTextArea();
+		textList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, new Color(255, 255, 255), null, null));
 		textList.setEditable(false);
 		textList.setLineWrap(true);
-		textList.setFont(new Font("Calibri", Font.PLAIN, 20));
+		textList.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		scrollList.setViewportView(textList);
 		setUndecorated(true);
 		setResizable(false);
@@ -120,7 +119,7 @@ public class ListGame extends JFrame {
 		StringBuffer sb = new StringBuffer();
 		
 		for(String sGames : list) {
-			sb.append(sGames+"\n");
+			sb.append("> "+sGames+"\n");
 			String finalList = sb.toString();
 			textList.setText(finalList);
 		}
