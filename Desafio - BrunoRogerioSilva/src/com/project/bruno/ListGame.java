@@ -10,10 +10,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -114,18 +113,27 @@ public class ListGame extends JFrame {
 				
 				Statement stQuery = connection.createStatement();
 		
-				String query = "SELECT * FROM systemDB.championships";
-				
-				ArrayList<String> list = new ArrayList<>();
-		
-				stQuery.execute(query);
-				
-				
+				ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
+				int row = 0;
+		        while(rs.next()){
+		            row = rs.getInt("COUNT(*)");                              
+		        }
+		        
+				for(int i=1; i<=row; i++) {
+					String query = "SELECT name FROM systemDB.championships WHERE id='"+i+"'";
+					ResultSet rs2 = stQuery.executeQuery(query);
+					String name = "";
+					
+					while(rs2.next()) {
+						name = rs2.getString("name");
+					}
+					
+					textList.append(name + "\n");
+				}
 				
 			}catch (SQLException e) {
 		        e.printStackTrace();
 		    }
-		
 		
 		textList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, new Color(255, 255, 255), null, null));
 		textList.setEditable(false);
@@ -134,19 +142,5 @@ public class ListGame extends JFrame {
 		scrollList.setViewportView(textList);
 		setUndecorated(true);
 		setResizable(false);
-		
-		/*--------------------------------------------------
-		ArrayList<String> list = new ArrayList<>();
-		list.add("Campeonato Municipal");
-		list.add("Campeonato Mundial");
-		
-		StringBuffer sb = new StringBuffer();
-		
-		for(String sGames : list) {
-			sb.append("> "+sGames+"\n");
-			String finalList = sb.toString();
-			textList.setText(finalList);
-		}
-		*/
 	}
 }

@@ -20,10 +20,6 @@ CREATE TABLE games(
     FOREIGN KEY(championships_id) REFERENCES championships(id)
 );
 
-select * from championships;
-
-delete from championships where name = "Campeonato Mundial";
+SELECT * FROM championships;
 
 SET GLOBAL TIME_ZONE = '+3:00';
-
-SET SQL_SAFE_UPDATES = 0;

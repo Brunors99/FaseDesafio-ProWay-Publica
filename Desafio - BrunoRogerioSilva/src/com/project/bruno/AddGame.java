@@ -122,7 +122,7 @@ public class AddGame extends JFrame {
 				String name = entryCamp.getText();
 				
 				if(name.equals("")) {
-					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo abaixo", "Cadastro", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Cadastro", JOptionPane.ERROR_MESSAGE);
 				}else {
 					try{
 						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");

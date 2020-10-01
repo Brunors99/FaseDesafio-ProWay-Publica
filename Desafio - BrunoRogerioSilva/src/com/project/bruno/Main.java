@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -13,6 +14,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.JButton;
 import java.awt.SystemColor;
 
@@ -121,9 +128,28 @@ public class Main extends JFrame {
 		JButton btnListOfGames = new JButton("Listar os campeonatos");
 		btnListOfGames.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListGame listGame = new ListGame();
-				listGame.setVisible(true);
-				setVisible(false);
+				
+				try {
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+					
+					Statement stQuery = connection.createStatement();
+			
+					ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
+					int row = 0;
+			        while(rs.next()){
+			            row = rs.getInt("COUNT(*)");                              
+			        }
+					
+					if(row==0) {
+						JOptionPane.showMessageDialog(null, "Não existem campeonatos cadastrados.", "Lista de Campeonatos", JOptionPane.ERROR_MESSAGE);
+					}else {
+						ListGame listGame = new ListGame();
+						listGame.setVisible(true);
+						setVisible(false);
+				}
+				}catch (SQLException e1) {
+			        e1.printStackTrace();
+			    }
 			}
 		});
 		

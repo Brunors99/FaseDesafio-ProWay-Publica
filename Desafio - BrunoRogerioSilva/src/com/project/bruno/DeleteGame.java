@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -116,6 +117,7 @@ public class DeleteGame extends JFrame {
 		entryCamp.setColumns(10);
 		
 		JButton btnDelete = new JButton("Apagar Campeonato");
+		btnDelete.setFocusable(false);
 		btnDelete.setForeground(SystemColor.text);
 		btnDelete.setBackground(SystemColor.textHighlight);
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -125,7 +127,7 @@ public class DeleteGame extends JFrame {
 				String name = entryCamp.getText();
 				
 				if(name.equals("")) {
-					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo abaixo", "Remover", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima", "Remover", JOptionPane.ERROR_MESSAGE);
 				}else {
 					try{
 						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
@@ -134,7 +136,7 @@ public class DeleteGame extends JFrame {
 				
 						String query = "SET SQL_SAFE_UPDATES = 0";
 						
-						String query2 = "DELETE FROM systemDB.championships WHERE name = '"+name+ "';";
+						String query2 = "DELETE FROM systemDB.championships WHERE name = '"+name+ "'";
 						
 						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1 ";
 						
@@ -142,7 +144,7 @@ public class DeleteGame extends JFrame {
 						stQuery.execute(query2);
 						stQuery.execute(query3);
 				
-						JOptionPane.showMessageDialog(null, "O campeonato foi removido com sucesso!", "Remover", JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campeonato foi removido com sucesso!", "Remover Campeonato", JOptionPane.PLAIN_MESSAGE);
 				
 					} catch (SQLException e1){
 						e1.printStackTrace();
@@ -154,6 +156,49 @@ public class DeleteGame extends JFrame {
 		});
 		btnDelete.setBounds(10, 320, 244, 42);
 		deleteGame.add(btnDelete);
+		
+		JButton btnDeleteAll = new JButton("Apagar todos os campeonatos");
+		btnDeleteAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+					try{
+						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+				
+						Statement stQuery = connection.createStatement();
+						
+						ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
+						int row = 0;
+				        while(rs.next()){
+				            row = rs.getInt("COUNT(*)");                              
+				        }
+						
+						if(row==0) {
+							JOptionPane.showMessageDialog(null, "Não existem campeonatos para apagar.", "Apagar Campeonatos", JOptionPane.ERROR_MESSAGE);
+						}else {
+				
+						String query = "SET SQL_SAFE_UPDATES = 0";
+						
+						String query2 = "DELETE FROM systemDB.championships";
+						
+						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1 ";
+						
+						stQuery.execute(query);
+						stQuery.execute(query2);
+						stQuery.execute(query3);
+				
+						JOptionPane.showMessageDialog(null, "Todos os campeonatos foram apagados com sucesso!", "Apagar Campeonatos", JOptionPane.PLAIN_MESSAGE);
+						}
+					} catch (SQLException e1){
+						e1.printStackTrace();
+					}
+				}
+		});
+		btnDeleteAll.setFocusable(false);
+		btnDeleteAll.setForeground(Color.WHITE);
+		btnDeleteAll.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnDeleteAll.setBackground(SystemColor.textHighlight);
+		btnDeleteAll.setBounds(578, 367, 206, 36);
+		deleteGame.add(btnDeleteAll);
 		
 	}
 }
