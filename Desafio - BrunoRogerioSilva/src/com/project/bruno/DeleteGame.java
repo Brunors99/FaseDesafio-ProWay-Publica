@@ -8,6 +8,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -116,7 +121,35 @@ public class DeleteGame extends JFrame {
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Campeonato removido com sucesso!", "Remover Campeonato", JOptionPane.PLAIN_MESSAGE);
+
+				String name = entryCamp.getText();
+				
+				if(name.equals("")) {
+					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo abaixo", "Remover", JOptionPane.ERROR_MESSAGE);
+				}else {
+					try{
+						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+				
+						Statement stQuery = connection.createStatement();
+				
+						String query = "SET SQL_SAFE_UPDATES = 0";
+						
+						String query2 = "DELETE FROM systemDB.championships WHERE name = '"+name+ "';";
+						
+						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1 ";
+						
+						stQuery.execute(query);
+						stQuery.execute(query2);
+						stQuery.execute(query3);
+				
+						JOptionPane.showMessageDialog(null, "O campeonato foi removido com sucesso!", "Remover", JOptionPane.PLAIN_MESSAGE);
+				
+					} catch (SQLException e1){
+						e1.printStackTrace();
+					}
+					entryCamp.setText("");
+				}
+				
 			}
 		});
 		btnDelete.setBounds(10, 320, 244, 42);

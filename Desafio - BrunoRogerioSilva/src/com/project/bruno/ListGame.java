@@ -8,7 +8,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -103,6 +108,25 @@ public class ListGame extends JFrame {
 		listGamePane.add(scrollList);
 		
 		JTextArea textList = new JTextArea();
+		
+			try {
+				Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+				
+				Statement stQuery = connection.createStatement();
+		
+				String query = "SELECT * FROM systemDB.championships";
+				
+				ArrayList<String> list = new ArrayList<>();
+		
+				stQuery.execute(query);
+				
+				
+				
+			}catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		
+		
 		textList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, new Color(255, 255, 255), null, null));
 		textList.setEditable(false);
 		textList.setLineWrap(true);
@@ -111,7 +135,7 @@ public class ListGame extends JFrame {
 		setUndecorated(true);
 		setResizable(false);
 		
-		/*--------------------------------------------------*/
+		/*--------------------------------------------------
 		ArrayList<String> list = new ArrayList<>();
 		list.add("Campeonato Municipal");
 		list.add("Campeonato Mundial");
@@ -123,6 +147,6 @@ public class ListGame extends JFrame {
 			String finalList = sb.toString();
 			textList.setText(finalList);
 		}
-		/*--------------------------------------------*/
+		*/
 	}
 }

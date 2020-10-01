@@ -7,6 +7,11 @@ import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -114,7 +119,28 @@ public class AddGame extends JFrame {
 		JButton btnAddGame = new JButton("Adicionar");
 		btnAddGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Campeonato cadastrado com sucesso!", "Adicionar Campeonato", JOptionPane.PLAIN_MESSAGE);
+				String name = entryCamp.getText();
+				
+				if(name.equals("")) {
+					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo abaixo", "Cadastro", JOptionPane.ERROR_MESSAGE);
+				}else {
+					try{
+						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+				
+						Statement stQuery = connection.createStatement();
+				
+						String query = "INSERT INTO systemDB.championships (name) VALUES"
+								+ "('"+name+"')";
+				
+						stQuery.execute(query);
+				
+						JOptionPane.showMessageDialog(null, "O campeonato foi cadastrado com sucesso!", "Cadastro", JOptionPane.PLAIN_MESSAGE);
+				
+					} catch (SQLException e1){
+						e1.printStackTrace();
+					}
+					entryCamp.setText("");
+				}
 			}
 		});
 		btnAddGame.setFocusPainted(false);
