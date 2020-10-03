@@ -53,6 +53,7 @@ public class AddGame extends JFrame {
 	 * Create the frame.
 	 */
 	public AddGame() {
+		setBackground(SystemColor.inactiveCaptionBorder);
 		setUndecorated(true);
 		setFocusCycleRoot(false);
 		setResizable(false);
@@ -77,9 +78,9 @@ public class AddGame extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 794, 414);
+		setBounds(100, 100, 704, 343);
 		addGamePane = new JPanel();
-		addGamePane.setBackground(new Color(255, 255, 255));
+		addGamePane.setBackground(SystemColor.inactiveCaptionBorder);
 		addGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(addGamePane);
 		addGamePane.setLayout(null);
@@ -101,7 +102,7 @@ public class AddGame extends JFrame {
 		btnExit.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnExit.setForeground(Color.WHITE);
 		btnExit.setBackground(Color.RED);
-		btnExit.setBounds(725, 0, 59, 36);
+		btnExit.setBounds(633, 0, 59, 36);
 		addGamePane.add(btnExit);
 		
 		JLabel subTitle = new JLabel("Para incluir um novo campeonato, preencha o campo abaixo com o nome desejado.");
@@ -112,7 +113,7 @@ public class AddGame extends JFrame {
 		entryCamp = new JTextField();
 		entryCamp.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		entryCamp.setToolTipText("ex. Campeonato Municipal");
-		entryCamp.setBounds(10, 278, 343, 31);
+		entryCamp.setBounds(10, 209, 343, 31);
 		addGamePane.add(entryCamp);
 		entryCamp.setColumns(10);
 		
@@ -147,7 +148,7 @@ public class AddGame extends JFrame {
 		btnAddGame.setForeground(SystemColor.text);
 		btnAddGame.setBackground(SystemColor.textHighlight);
 		btnAddGame.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnAddGame.setBounds(10, 320, 244, 42);
+		btnAddGame.setBounds(10, 251, 244, 42);
 		addGamePane.add(btnAddGame);
 	}
 }

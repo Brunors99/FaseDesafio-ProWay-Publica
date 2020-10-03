@@ -1,6 +1,8 @@
 CREATE DATABASE systemDB;
 USE systemDB;
 
+-- drop database systemDB;
+
 CREATE TABLE championships(
 	id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(255) NOT NULL,
@@ -9,7 +11,6 @@ CREATE TABLE championships(
 
 CREATE TABLE games(
 	id INT NOT NULL AUTO_INCREMENT,
-    nGame INT NOT NULL,
     score INT,
     min_season INT,
     max_season INT,
@@ -20,6 +21,6 @@ CREATE TABLE games(
     FOREIGN KEY(championships_id) REFERENCES championships(id)
 );
 
-SELECT * FROM championships;
+-- SELECT * FROM games;
 
 SET GLOBAL TIME_ZONE = '+3:00';

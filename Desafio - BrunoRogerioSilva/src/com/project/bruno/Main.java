@@ -76,7 +76,7 @@ public class Main extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 918, 563);
 		mainPane = new JPanel();
-		mainPane.setBackground(new Color(255, 255, 255));
+		mainPane.setBackground(SystemColor.inactiveCaptionBorder);
 		mainPane.setBorder(null);
 		setContentPane(mainPane);
 		mainPane.setLayout(null);
@@ -163,9 +163,27 @@ public class Main extends JFrame {
 		JButton btnModifyGame = new JButton("Acessar um campeonato");
 		btnModifyGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AcessGame acessGame = new AcessGame();
-				acessGame.setVisible(true);
-				setVisible(false);
+				try {
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+					
+					Statement stQuery = connection.createStatement();
+			
+					ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
+					int row = 0;
+			        while(rs.next()){
+			            row = rs.getInt("COUNT(*)");                              
+			        }
+					
+					if(row==0) {
+						JOptionPane.showMessageDialog(null, "Não existe campeonato algum para acessar.", "Acessar Campeonatos", JOptionPane.ERROR_MESSAGE);
+					}else {
+						AcessGame acessGame = new AcessGame();
+						acessGame.setVisible(true);
+						setVisible(false);
+				}
+				}catch (SQLException e1) {
+			        e1.printStackTrace();
+			    }
 			}
 		});
 		btnModifyGame.setForeground(SystemColor.text);

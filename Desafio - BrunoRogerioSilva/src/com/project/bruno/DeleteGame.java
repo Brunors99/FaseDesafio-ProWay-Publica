@@ -75,15 +75,15 @@ public class DeleteGame extends JFrame {
 		setUndecorated(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 794, 414);
+		setBounds(100, 100, 738, 343);
 		deleteGame = new JPanel();
-		deleteGame.setBackground(new Color(255, 255, 255));
+		deleteGame.setBackground(SystemColor.inactiveCaptionBorder);
 		deleteGame.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(deleteGame);
 		deleteGame.setLayout(null);
 		
 		JButton btnExit = new JButton("X");
-		btnExit.setBounds(725, 0, 59, 36);
+		btnExit.setBounds(669, 0, 59, 36);
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Main main = new Main();
@@ -104,15 +104,15 @@ public class DeleteGame extends JFrame {
 		title.setBounds(10, 13, 401, 26);
 		deleteGame.add(title);
 		
-		JLabel subTitle = new JLabel("Para remover um campeonato da lista, preencha o campo abaixo com o nome do mesmo");
+		JLabel subTitle = new JLabel("Para remover um campeonato da lista, preencha o campo abaixo com o nome do mesmo.");
 		subTitle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		subTitle.setBounds(20, 50, 634, 20);
+		subTitle.setBounds(20, 50, 649, 20);
 		deleteGame.add(subTitle);
 		
 		entryCamp = new JTextField();
 		entryCamp.setToolTipText("ex. Campeonato Estadual");
 		entryCamp.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		entryCamp.setBounds(10, 278, 343, 31);
+		entryCamp.setBounds(10, 208, 343, 31);
 		deleteGame.add(entryCamp);
 		entryCamp.setColumns(10);
 		
@@ -127,7 +127,7 @@ public class DeleteGame extends JFrame {
 				String name = entryCamp.getText();
 				
 				if(name.equals("")) {
-					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima", "Remover", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Remover", JOptionPane.ERROR_MESSAGE);
 				}else {
 					try{
 						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
@@ -154,7 +154,7 @@ public class DeleteGame extends JFrame {
 				
 			}
 		});
-		btnDelete.setBounds(10, 320, 244, 42);
+		btnDelete.setBounds(10, 250, 170, 36);
 		deleteGame.add(btnDelete);
 		
 		JButton btnDeleteAll = new JButton("Apagar todos os campeonatos");
@@ -195,9 +195,9 @@ public class DeleteGame extends JFrame {
 		});
 		btnDeleteAll.setFocusable(false);
 		btnDeleteAll.setForeground(Color.WHITE);
-		btnDeleteAll.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnDeleteAll.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnDeleteAll.setBackground(SystemColor.textHighlight);
-		btnDeleteAll.setBounds(578, 367, 206, 36);
+		btnDeleteAll.setBounds(496, 296, 232, 36);
 		deleteGame.add(btnDeleteAll);
 		
 	}

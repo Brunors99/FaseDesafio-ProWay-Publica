@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
+import java.awt.SystemColor;
 
 public class ListGame extends JFrame {
 
@@ -75,7 +76,7 @@ public class ListGame extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 732, 414);
 		listGamePane = new JPanel();
-		listGamePane.setBackground(new Color(255, 255, 255));
+		listGamePane.setBackground(SystemColor.inactiveCaptionBorder);
 		listGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(listGamePane);
 		listGamePane.setLayout(null);
