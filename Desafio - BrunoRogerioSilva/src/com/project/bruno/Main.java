@@ -196,9 +196,27 @@ public class Main extends JFrame {
 		JButton btnDeleteGame = new JButton("Apagar um campeonato");
 		btnDeleteGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DeleteGame deleteGame = new DeleteGame();
-				deleteGame.setVisible(true);
-				setVisible(false);
+				try {
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+					
+					Statement stQuery = connection.createStatement();
+			
+					ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
+					int row = 0;
+			        while(rs.next()){
+			            row = rs.getInt("COUNT(*)");                              
+			        }
+					
+					if(row==0) {
+						JOptionPane.showMessageDialog(null, "Não existe campeonato algum para apagar.", "Apagar Campeonatos", JOptionPane.ERROR_MESSAGE);
+					}else {
+						DeleteGame deleteGame = new DeleteGame();
+						deleteGame.setVisible(true);
+						setVisible(false);
+				}
+				}catch (SQLException e1) {
+			        e1.printStackTrace();
+			    }
 			}
 		});
 		btnDeleteGame.setForeground(SystemColor.text);

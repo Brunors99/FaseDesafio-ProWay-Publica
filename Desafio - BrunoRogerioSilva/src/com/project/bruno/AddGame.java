@@ -131,7 +131,7 @@ public class AddGame extends JFrame {
 						Statement stQuery = connection.createStatement();
 				
 						String query = "INSERT INTO systemDB.championships (name) VALUES"
-								+ "('"+name+"')";
+								+ "('"+name+"');";
 				
 						stQuery.execute(query);
 				

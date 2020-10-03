@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -136,9 +135,9 @@ public class DeleteGame extends JFrame {
 				
 						String query = "SET SQL_SAFE_UPDATES = 0";
 						
-						String query2 = "DELETE FROM systemDB.championships WHERE name = '"+name+ "'";
+						String query2 = "DELETE FROM systemDB.championships WHERE name = '"+name+ "';";
 						
-						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1 ";
+						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1";
 						
 						stQuery.execute(query);
 						stQuery.execute(query2);
@@ -165,29 +164,19 @@ public class DeleteGame extends JFrame {
 						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
 				
 						Statement stQuery = connection.createStatement();
-						
-						ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
-						int row = 0;
-				        while(rs.next()){
-				            row = rs.getInt("COUNT(*)");                              
-				        }
-						
-						if(row==0) {
-							JOptionPane.showMessageDialog(null, "Não existem campeonatos para apagar.", "Apagar Campeonatos", JOptionPane.ERROR_MESSAGE);
-						}else {
-				
+			
 						String query = "SET SQL_SAFE_UPDATES = 0";
 						
-						String query2 = "DELETE FROM systemDB.championships";
+						String query2 = "DELETE FROM systemDB.championships;";
 						
-						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1 ";
+						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1";
 						
 						stQuery.execute(query);
 						stQuery.execute(query2);
 						stQuery.execute(query3);
 				
 						JOptionPane.showMessageDialog(null, "Todos os campeonatos foram apagados com sucesso!", "Apagar Campeonatos", JOptionPane.PLAIN_MESSAGE);
-						}
+						
 					} catch (SQLException e1){
 						e1.printStackTrace();
 					}

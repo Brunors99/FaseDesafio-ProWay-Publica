@@ -10,9 +10,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -31,6 +31,7 @@ public class AcessGame extends JFrame {
 	private JPanel acessPane;
 	private int xx,xy;
 	private JTextField entryCamp;
+	private JTextField entryCamp2;
 
 	/**
 	 * Launch the application.
@@ -74,7 +75,7 @@ public class AcessGame extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 743, 302);
+		setBounds(100, 100, 743, 525);
 		acessPane = new JPanel();
 		acessPane.setBackground(SystemColor.inactiveCaptionBorder);
 		acessPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -108,7 +109,7 @@ public class AcessGame extends JFrame {
 		acessPane.add(lblNewLabel);
 		
 		entryCamp = new JTextField();
-		entryCamp.setBounds(10, 189, 343, 31);
+		entryCamp.setBounds(20, 87, 343, 31);
 		entryCamp.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		acessPane.add(entryCamp);
 		entryCamp.setColumns(10);
@@ -119,6 +120,7 @@ public class AcessGame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				String name = entryCamp.getText();
+				int idGame = 0;
 				
 				if(name.equals("")) {
 					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Acesso", JOptionPane.ERROR_MESSAGE);
@@ -127,10 +129,25 @@ public class AcessGame extends JFrame {
 						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
 					
 						Statement stQuery = connection.createStatement();
-					
-						String query = "SELECT name FROM systemDB.championships WHERE name='"+name+"'";
-					
-						stQuery.execute(query);
+						
+						ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
+						int row = 0;
+				        while(rs.next()){
+				            row = rs.getInt("COUNT(*)");                              
+				        }
+				        
+				        ResultSet rs2 = stQuery.executeQuery("SELECT id FROM systemDB.championships WHERE name = '"+name+"'");
+				        
+				        for(int i=1; i<=row; i++) {
+				        	while(rs2.next()) {
+				        		idGame = rs2.getInt("id");
+				        	}
+				        }
+						
+						String query2 = "INSERT INTO systemDB.games (championships_id) VALUES"
+								+ "('"+idGame+"');";
+						
+						stQuery.executeUpdate(query2);
 					
 						entryCamp.setText("");
 				
@@ -138,16 +155,66 @@ public class AcessGame extends JFrame {
 					}catch (SQLException e1){
 						e1.printStackTrace();
 					}
-					Game game = new Game();
-					game.setVisible(true);
-					setVisible(false);
 				}
 			}
 		});
 		btnAcess.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAcess.setBackground(SystemColor.textHighlight);
 		btnAcess.setForeground(SystemColor.text);
-		btnAcess.setBounds(10, 231, 244, 42);
+		btnAcess.setBounds(20, 129, 244, 42);
 		acessPane.add(btnAcess);
+		
+		JLabel title2 = new JLabel("Gerenciamento do campeonato");
+		title2.setFont(new Font("Tahoma", Font.BOLD, 21));
+		title2.setBounds(10, 241, 343, 26);
+		acessPane.add(title2);
+		
+		JLabel subTitle2 = new JLabel("Após acessar o campeonato, adicione novos jogos, placares e visualize a tabela geral.");
+		subTitle2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		subTitle2.setBounds(20, 278, 623, 26);
+		acessPane.add(subTitle2);
+		
+		JLabel addScore = new JLabel("Informe o placar:");
+		addScore.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addScore.setBounds(20, 354, 137, 20);
+		acessPane.add(addScore);
+		
+		entryCamp2 = new JTextField();
+		entryCamp2.setBounds(20, 385, 244, 31);
+		acessPane.add(entryCamp2);
+		entryCamp2.setColumns(10);
+		
+		JButton btnAdd = new JButton("Adicionar Jogo");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String score = entryCamp2.getText();
+				
+				if(score.equals("")) {
+					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Adicionar Jogo", JOptionPane.ERROR_MESSAGE);
+				}else {
+					try {
+						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+						
+						Statement stQuery = connection.createStatement();
+						
+						String query = "INSERT INTO systemDB.games (score) VALUES"
+								+ "('"+score+"');";
+						
+						stQuery.execute(query);
+					
+					}catch (SQLException e1){
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		btnAdd.setForeground(Color.WHITE);
+		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnAdd.setFocusable(false);
+		btnAdd.setBackground(SystemColor.textHighlight);
+		btnAdd.setBounds(20, 427, 244, 42);
+		acessPane.add(btnAdd);
+		
 	}
 }

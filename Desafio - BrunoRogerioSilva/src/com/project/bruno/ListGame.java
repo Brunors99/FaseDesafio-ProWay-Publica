@@ -74,7 +74,7 @@ public class ListGame extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 732, 414);
+		setBounds(100, 100, 589, 414);
 		listGamePane = new JPanel();
 		listGamePane.setBackground(SystemColor.inactiveCaptionBorder);
 		listGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -93,7 +93,7 @@ public class ListGame extends JFrame {
 		btnExit.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnExit.setForeground(Color.WHITE);
 		btnExit.setBackground(Color.RED);
-		btnExit.setBounds(664, 0, 59, 36);
+		btnExit.setBounds(519, 0, 59, 36);
 		listGamePane.add(btnExit);
 		
 		JLabel title = new JLabel("Lista dos campeonatos adicionados");
@@ -104,7 +104,7 @@ public class ListGame extends JFrame {
 		JScrollPane scrollList = new JScrollPane();
 		scrollList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, new Color(255, 255, 255), null, new Color(255, 255, 255), null));
 		scrollList.setViewportBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		scrollList.setBounds(10, 95, 545, 308);
+		scrollList.setBounds(10, 95, 475, 308);
 		listGamePane.add(scrollList);
 		
 		JTextArea textList = new JTextArea();

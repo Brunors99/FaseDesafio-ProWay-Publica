@@ -16,11 +16,18 @@ CREATE TABLE games(
     max_season INT,
     min_record INT,
     max_record INT,
-    championships_id INT NOT NULL,
+    championships_id INT NOT NULL DEFAULT 0,
     PRIMARY KEY(id),
     FOREIGN KEY(championships_id) REFERENCES championships(id)
 );
+-- ALTER TABLE games CHANGE COLUMN championships_id championships_id INT NOT NULL DEFAULT 0; 
+
+-- select id from games where id = championships_id;
 
 -- SELECT * FROM games;
+
+-- SELECT * FROM championships;
+
+SELECT id FROM systemDB.championships WHERE name='Campeonato da China';
 
 SET GLOBAL TIME_ZONE = '+3:00';
