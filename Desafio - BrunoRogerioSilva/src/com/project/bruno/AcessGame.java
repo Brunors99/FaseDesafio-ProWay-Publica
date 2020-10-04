@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.SystemColor;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class AcessGame extends JFrame {
 
@@ -35,7 +37,7 @@ public class AcessGame extends JFrame {
 	private JTextField entryCamp2;
 	private String GameName = "";
 	private String ScoreNum = "";
-	
+
 
 	/**
 	 * Launch the application.
@@ -79,7 +81,7 @@ public class AcessGame extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 743, 525);
+		setBounds(100, 100, 743, 732);
 		acessPane = new JPanel();
 		acessPane.setBackground(SystemColor.inactiveCaptionBorder);
 		acessPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -150,7 +152,6 @@ public class AcessGame extends JFrame {
 					}catch (SQLException e1){
 						e1.printStackTrace();
 					}
-						entryCamp.setText("");
 				}
 			}
 		});
@@ -162,23 +163,23 @@ public class AcessGame extends JFrame {
 		
 		JLabel title2 = new JLabel("Gerenciamento do campeonato");
 		title2.setFont(new Font("Tahoma", Font.BOLD, 21));
-		title2.setBounds(10, 241, 343, 26);
+		title2.setBounds(10, 197, 343, 26);
 		acessPane.add(title2);
 		
 		JLabel subTitle2 = new JLabel("Após acessar o campeonato, adicione novos jogos, placares e visualize a tabela geral.");
 		subTitle2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		subTitle2.setBounds(20, 278, 623, 26);
+		subTitle2.setBounds(20, 234, 623, 26);
 		acessPane.add(subTitle2);
 		
 		JLabel addScore = new JLabel("Informe o placar:");
 		addScore.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		addScore.setBounds(20, 333, 137, 20);
+		addScore.setBounds(20, 285, 137, 20);
 		acessPane.add(addScore);
 		
 		entryCamp2 = new JTextField();
 		entryCamp2.setToolTipText("Deve ser um número positivo, inteiro e menor que 1000");
 		entryCamp2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		entryCamp2.setBounds(20, 364, 244, 31);
+		entryCamp2.setBounds(20, 316, 244, 31);
 		acessPane.add(entryCamp2);
 		entryCamp2.setColumns(10);
 		
@@ -212,9 +213,6 @@ public class AcessGame extends JFrame {
 						
 							stQuery.execute(query);
 							
-							
-						
-						
 						}catch (SQLException e1) {
 							e1.printStackTrace();
 						}
@@ -228,14 +226,36 @@ public class AcessGame extends JFrame {
 		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAdd.setFocusable(false);
 		btnAdd.setBackground(SystemColor.textHighlight);
-		btnAdd.setBounds(20, 406, 244, 42);
+		btnAdd.setBounds(20, 358, 244, 42);
 		acessPane.add(btnAdd);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 473, 666, 179);
+		acessPane.add(scrollPane);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		textArea.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		scrollPane.setViewportView(textArea);
 		
 		JButton btnTable = new JButton("Visualizar Tabela");
 		btnTable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				GameName = entryCamp.getText();
+				int scoreInt = 0;
+				String idMatch = "";
+				int idMatchInt = 0;
+	    		String idChamps = "";
+	    		int idChampsInt = 0;
+	    		String minSeason = "";
+	    		int minSeasonInt = 0;
+	    		int maxSeasonInt = 0;
+	    		int minRecord = 0;
+	    		int maxRecord = 0;
+				
 				try{
-					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/systemDB?user=root&password=CarroSynthwave2101");
 			
 					Statement stQuery = connection.createStatement();
 					
@@ -248,9 +268,45 @@ public class AcessGame extends JFrame {
 			        if(row==0) {
 			        	JOptionPane.showMessageDialog(null, "Não há jogos para mostrar.", "Tabela de Jogos", JOptionPane.ERROR_MESSAGE);
 			        }else {
-			        	DisplayScore displayScore = new DisplayScore();
-						displayScore.setVisible(true);
-						setVisible(false);
+			        		ResultSet rs1 = stQuery.executeQuery("SELECT id FROM systemDB.championships WHERE name='"+GameName+"'");
+			        		while(rs1.next()) {
+			        			idChamps = rs1.getString("id");
+			        		}
+			        		
+			        		idChampsInt = Integer.parseInt(idChamps);
+			        		
+			    			ResultSet rs2 = stQuery.executeQuery("SELECT championships_id FROM systemDB.games JOIN championships ON games.championships_id = '"+idChampsInt+"'");
+			    			while(rs2.next()) {
+			    				idMatch = rs2.getString("championships_id");
+			    			}
+			    			
+			    			idMatchInt = Integer.parseInt(idMatch);
+			    	        
+			    			for(int i=1; i<=row; i++) {
+			    				String query2 = "SELECT championships.name, games.score from systemDB.championships left join systemDB.games on championships_id ='"+idMatchInt+"'";
+			    				ResultSet rs3 = stQuery.executeQuery(query2);
+			    				String score = "";
+			    				String name = "";
+			    				
+			    				while(rs3.next()) {
+			    					score = rs3.getString("score");
+			    					scoreInt = Integer.parseInt(score);
+			    					name = rs3.getString("name");
+			    					minSeason = rs3.getString("score");
+			    					minSeasonInt = Integer.parseInt(minSeason);
+			    					if(scoreInt<minSeasonInt) {
+			    						minSeasonInt=scoreInt;
+			    						minRecord++;
+			    					}else if(scoreInt>maxSeasonInt) {
+			    						maxSeasonInt=scoreInt;
+			    						maxRecord++;
+			    					}
+			    				}
+			    				
+			    				textArea.append("Campeonato: " + name + " | Pontuação: " + score + " | Mínimo da Temporada: " + minSeasonInt + " | Máximo da Temporada: "
+			    				+ maxSeasonInt + " | Quebra recorde min. "+ minRecord + " | Quebra recorde max. "+ maxRecord +"\n");
+			    			}
+			    		
 			        }
 					
 				}catch (SQLException e1){
@@ -262,8 +318,12 @@ public class AcessGame extends JFrame {
 		btnTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnTable.setFocusable(false);
 		btnTable.setBackground(SystemColor.textHighlight);
-		btnTable.setBounds(490, 472, 244, 42);
+		btnTable.setBounds(490, 680, 244, 42);
 		acessPane.add(btnTable);
 		
+		JLabel tableTitle = new JLabel("Tabela do Jogo");
+		tableTitle.setFont(new Font("Tahoma", Font.BOLD, 21));
+		tableTitle.setBounds(10, 427, 315, 26);
+		acessPane.add(tableTitle);
 	}
 }
