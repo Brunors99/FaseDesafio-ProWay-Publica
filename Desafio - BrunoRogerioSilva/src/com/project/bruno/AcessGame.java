@@ -8,11 +8,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.SystemColor;
 
@@ -26,6 +33,10 @@ public class AcessGame extends JFrame {
 	private int xx,xy;
 	private JTextField entryCamp;
 	private JTextField entryCamp2;
+	
+	private String GameName = "";
+	private String ScoreNum = "";
+	
 
 	/**
 	 * Launch the application.
@@ -112,7 +123,36 @@ public class AcessGame extends JFrame {
 		btnAcess.setFocusable(false);
 		btnAcess.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				GameName = entryCamp.getText();
 				
+				String GameQuery = "";
+				
+				if(GameName.equals("")) {
+					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Campeonato", JOptionPane.ERROR_MESSAGE);
+				}else {
+					try{
+						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+				
+						Statement stQuery = connection.createStatement();
+						
+						String queryGameName = "SELECT name FROM systemDB.championships WHERE name='"+GameName+"'";
+						ResultSet rs2 = stQuery.executeQuery(queryGameName);
+
+						while(rs2.next()) {
+						GameQuery = rs2.getString("name");
+						}
+						
+						if(GameQuery.equals(GameName)) {
+							JOptionPane.showMessageDialog(null, "O campeonato foi selecionado!", "Campeonato", JOptionPane.INFORMATION_MESSAGE);
+						}else {
+							JOptionPane.showMessageDialog(null, "O campeonato não foi encontrado.", "Campeonato", JOptionPane.ERROR_MESSAGE);
+					}
+			
+					}catch (SQLException e1){
+						e1.printStackTrace();
+					}
+						entryCamp.setText("");
+				}
 			}
 		});
 		btnAcess.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -137,6 +177,7 @@ public class AcessGame extends JFrame {
 		acessPane.add(addScore);
 		
 		entryCamp2 = new JTextField();
+		entryCamp2.setToolTipText("Deve ser um número positivo, inteiro e menor que 1000");
 		entryCamp2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		entryCamp2.setBounds(20, 364, 244, 31);
 		acessPane.add(entryCamp2);
@@ -146,8 +187,43 @@ public class AcessGame extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				ScoreNum = entryCamp2.getText();
+				float scoreFlt = Float.parseFloat(ScoreNum);
 				
-			}
+				if(ScoreNum.equals("")) {
+					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Adicionar Jogo", JOptionPane.ERROR_MESSAGE);
+				}else if((scoreFlt < 1000) && (scoreFlt > 0.0f) && (scoreFlt % 1.0f == 0.0f)) {	
+						try {
+							Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+						
+							Statement stQuery = connection.createStatement();
+						
+							String champID = "SELECT id FROM systemDB.championships WHERE name='"+GameName+"'";
+							ResultSet rs2 = stQuery.executeQuery(champID);
+
+							while(rs2.next()) {
+								champID = rs2.getString("id");
+							}
+						
+							int champINT = Integer.parseInt(champID);
+							int scoreInt = (int) scoreFlt;
+						
+							String query = "INSERT INTO systemDB.games (score, championships_id) VALUES"
+									+ "('"+scoreInt+"','"+champINT+"')";
+						
+							stQuery.execute(query);
+							
+							
+						
+						
+						}catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+				    	}else {
+				    		JOptionPane.showMessageDialog(null, "Formato inválido.", "Adicionar Jogo", JOptionPane.ERROR_MESSAGE);
+				    	}
+						entryCamp2.setText("");
+					}
 		});
 		btnAdd.setForeground(Color.WHITE);
 		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 14));
