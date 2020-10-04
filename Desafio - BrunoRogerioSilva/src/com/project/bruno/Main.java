@@ -210,9 +210,6 @@ public class Main extends JFrame {
 					if(row==0) {
 						JOptionPane.showMessageDialog(null, "Não existe campeonato algum para apagar.", "Apagar Campeonatos", JOptionPane.ERROR_MESSAGE);
 					}else {
-						
-						String query = "ALTER TABLE systemDB.games ADD CONSTRAINT championships_id FOREIGN KEY (championships_id) REFERENCES championships(id) ON DELETE CASCADE";
-						stQuery.execute(query);
 						DeleteGame deleteGame = new DeleteGame();
 						deleteGame.setVisible(true);
 						setVisible(false);

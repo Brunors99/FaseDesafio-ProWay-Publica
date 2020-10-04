@@ -33,7 +33,6 @@ public class AcessGame extends JFrame {
 	private int xx,xy;
 	private JTextField entryCamp;
 	private JTextField entryCamp2;
-	
 	private String GameName = "";
 	private String ScoreNum = "";
 	
@@ -233,6 +232,32 @@ public class AcessGame extends JFrame {
 		acessPane.add(btnAdd);
 		
 		JButton btnTable = new JButton("Visualizar Tabela");
+		btnTable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+			
+					Statement stQuery = connection.createStatement();
+					
+					ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.games");
+					int row = 0;
+			        while(rs.next()){
+			            row = rs.getInt("COUNT(*)");                              
+			        }
+			        
+			        if(row==0) {
+			        	JOptionPane.showMessageDialog(null, "Não há jogos para mostrar.", "Tabela de Jogos", JOptionPane.ERROR_MESSAGE);
+			        }else {
+			        	DisplayScore displayScore = new DisplayScore();
+						displayScore.setVisible(true);
+						setVisible(false);
+			        }
+					
+				}catch (SQLException e1){
+					e1.printStackTrace();
+				}
+				}
+		});
 		btnTable.setForeground(Color.WHITE);
 		btnTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnTable.setFocusable(false);

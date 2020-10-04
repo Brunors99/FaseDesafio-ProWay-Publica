@@ -102,7 +102,7 @@ public class ListGame extends JFrame {
 		listGamePane.add(title);
 		
 		JScrollPane scrollList = new JScrollPane();
-		scrollList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, new Color(255, 255, 255), null, new Color(255, 255, 255), null));
+		scrollList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, new Color(255, 255, 255), null, new Color(255, 255, 255), new Color(255, 255, 255)));
 		scrollList.setViewportBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		scrollList.setBounds(10, 95, 475, 308);
 		listGamePane.add(scrollList);
@@ -136,7 +136,7 @@ public class ListGame extends JFrame {
 		        e.printStackTrace();
 		    }
 		
-		textList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, new Color(255, 255, 255), null, null));
+		textList.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, new Color(0, 0, 0), null, null));
 		textList.setEditable(false);
 		textList.setLineWrap(true);
 		textList.setFont(new Font("Tahoma", Font.PLAIN, 20));

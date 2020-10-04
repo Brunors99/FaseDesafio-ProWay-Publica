@@ -15,19 +15,14 @@ CREATE TABLE games(
     min_record INT,
     max_record INT,
     championships_id INT NOT NULL DEFAULT 0,
-    PRIMARY KEY(id),
-    FOREIGN KEY(championships_id) REFERENCES championships(id)
+    PRIMARY KEY(id)
 );
+
+ALTER TABLE systemDB.games ADD CONSTRAINT championships_id FOREIGN KEY (championships_id) REFERENCES championships(id) ON DELETE CASCADE;
 
  SELECT * FROM games;
 
- SELECT * FROM championships;
-
--- update systemDB.championships set id = id-1;
-
--- ALTER TABLE systemDB.championships AUTO_INCREMENT = 1;
-
--- UPDATE systemDB.championships SET id = 1 WHERE id = 0;
+-- SELECT * FROM championships;
 
 SET SQL_SAFE_UPDATES = 0;
 
