@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -134,15 +133,20 @@ public class DeleteGame extends JFrame {
 						Statement stQuery = connection.createStatement();
 				
 						String query = "SET SQL_SAFE_UPDATES = 0";
-						
-						String query2 = "DELETE FROM systemDB.championships WHERE name = '"+name+ "';";
-						
-						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1";
-						
 						stQuery.execute(query);
+						
+						String query2 = "DELETE FROM systemDB.championships WHERE name = '"+name+"'";
 						stQuery.execute(query2);
+						
+						String query3 = "UPDATE systemDB.championships SET id = id-1";
 						stQuery.execute(query3);
-				
+						
+						String query4 = "SELECT id FROM systemDB.championships WHERE id=0";
+						stQuery.execute(query4);
+						
+						String query5 = "UPDATE systemDB.championships SET id = 1 WHERE id = 0";
+						stQuery.execute(query5);
+				       
 						JOptionPane.showMessageDialog(null, "O campeonato foi removido com sucesso!", "Remover Campeonato", JOptionPane.PLAIN_MESSAGE);
 				
 					} catch (SQLException e1){
@@ -167,7 +171,7 @@ public class DeleteGame extends JFrame {
 			
 						String query = "SET SQL_SAFE_UPDATES = 0";
 						
-						String query2 = "DELETE FROM systemDB.championships;";
+						String query2 = "DELETE FROM systemDB.championships";
 						
 						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1";
 						

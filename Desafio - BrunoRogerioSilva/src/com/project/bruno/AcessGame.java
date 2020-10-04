@@ -8,17 +8,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.SystemColor;
 
@@ -119,43 +113,6 @@ public class AcessGame extends JFrame {
 		btnAcess.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String name = entryCamp.getText();
-				int idGame = 0;
-				
-				if(name.equals("")) {
-					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Acesso", JOptionPane.ERROR_MESSAGE);
-				}else {
-					try {
-						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
-					
-						Statement stQuery = connection.createStatement();
-						
-						ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
-						int row = 0;
-				        while(rs.next()){
-				            row = rs.getInt("COUNT(*)");                              
-				        }
-				        
-				        ResultSet rs2 = stQuery.executeQuery("SELECT id FROM systemDB.championships WHERE name = '"+name+"'");
-				        
-				        for(int i=1; i<=row; i++) {
-				        	while(rs2.next()) {
-				        		idGame = rs2.getInt("id");
-				        	}
-				        }
-						
-						String query2 = "INSERT INTO systemDB.games (championships_id) VALUES"
-								+ "('"+idGame+"');";
-						
-						stQuery.executeUpdate(query2);
-					
-						entryCamp.setText("");
-				
-					
-					}catch (SQLException e1){
-						e1.printStackTrace();
-					}
-				}
 			}
 		});
 		btnAcess.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -176,11 +133,12 @@ public class AcessGame extends JFrame {
 		
 		JLabel addScore = new JLabel("Informe o placar:");
 		addScore.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		addScore.setBounds(20, 354, 137, 20);
+		addScore.setBounds(20, 333, 137, 20);
 		acessPane.add(addScore);
 		
 		entryCamp2 = new JTextField();
-		entryCamp2.setBounds(20, 385, 244, 31);
+		entryCamp2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		entryCamp2.setBounds(20, 364, 244, 31);
 		acessPane.add(entryCamp2);
 		entryCamp2.setColumns(10);
 		
@@ -188,33 +146,23 @@ public class AcessGame extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String score = entryCamp2.getText();
 				
-				if(score.equals("")) {
-					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Adicionar Jogo", JOptionPane.ERROR_MESSAGE);
-				}else {
-					try {
-						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
-						
-						Statement stQuery = connection.createStatement();
-						
-						String query = "INSERT INTO systemDB.games (score) VALUES"
-								+ "('"+score+"');";
-						
-						stQuery.execute(query);
-					
-					}catch (SQLException e1){
-						e1.printStackTrace();
-					}
-				}
 			}
 		});
 		btnAdd.setForeground(Color.WHITE);
 		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAdd.setFocusable(false);
 		btnAdd.setBackground(SystemColor.textHighlight);
-		btnAdd.setBounds(20, 427, 244, 42);
+		btnAdd.setBounds(20, 406, 244, 42);
 		acessPane.add(btnAdd);
+		
+		JButton btnTable = new JButton("Visualizar Tabela");
+		btnTable.setForeground(Color.WHITE);
+		btnTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnTable.setFocusable(false);
+		btnTable.setBackground(SystemColor.textHighlight);
+		btnTable.setBounds(490, 472, 244, 42);
+		acessPane.add(btnTable);
 		
 	}
 }

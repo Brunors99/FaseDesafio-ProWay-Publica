@@ -24,10 +24,16 @@ CREATE TABLE games(
 
 -- select id from games where id = championships_id;
 
--- SELECT * FROM games;
+SELECT * FROM games;
 
--- SELECT * FROM championships;
+SELECT * FROM championships;
+
+update systemDB.championships set id = id-1;
+
+ALTER TABLE systemDB.championships AUTO_INCREMENT = 1;
 
 SELECT id FROM systemDB.championships WHERE name='Campeonato da China';
+
+SET SQL_SAFE_UPDATES = 0;
 
 SET GLOBAL TIME_ZONE = '+3:00';
