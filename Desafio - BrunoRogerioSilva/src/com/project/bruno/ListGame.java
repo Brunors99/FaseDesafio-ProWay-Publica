@@ -106,7 +106,7 @@ public class ListGame extends JFrame {
 		JTextArea textList = new JTextArea();
 		
 			try {
-				Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+				Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=***");
 				
 				Statement stQuery = connection.createStatement();
 		

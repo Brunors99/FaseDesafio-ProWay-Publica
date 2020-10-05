@@ -264,7 +264,7 @@ public class AcessGame extends JFrame {
 	    		int maxRecord = 0;
 				
 				try{
-					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/systemDB?user=root&password=CarroSynthwave2101");
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/systemDB?user=root&password=***");
 			
 					Statement stQuery = connection.createStatement();
 					
