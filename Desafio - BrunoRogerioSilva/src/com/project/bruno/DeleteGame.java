@@ -24,15 +24,20 @@ import java.awt.SystemColor;
 public class DeleteGame extends JFrame {
 
 	/**
+	 * Classe responsável por deletar os campeonatos desejados do banco de dados, assim como desfazer a relação deste campeonato
+	 * com seus respectivos jogos.
 	 * 
+	 * @author Bruno Rogério da Silva
+	 * @version 1.0
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel deleteGame;
 	private int xx,xy;
 	private JTextField entryCamp;
 
 	/**
-	 * Launch the application.
+	 * Inicia a aplicação.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -48,7 +53,7 @@ public class DeleteGame extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria o Frame.
 	 */
 	public DeleteGame() {
 		addMouseListener(new MouseAdapter() {
@@ -69,16 +74,6 @@ public class DeleteGame extends JFrame {
 				DeleteGame.this.setLocation(x - xx, y - xy);
 			}
 		});
-		
-		setUndecorated(true);
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 738, 343);
-		deleteGame = new JPanel();
-		deleteGame.setBackground(SystemColor.inactiveCaptionBorder);
-		deleteGame.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(deleteGame);
-		deleteGame.setLayout(null);
 		
 		JButton btnExit = new JButton("X");
 		btnExit.setBounds(669, 0, 59, 36);
@@ -124,26 +119,31 @@ public class DeleteGame extends JFrame {
 
 				String name = entryCamp.getText();
 				
+				//Verifica se o campo de texto está vazio, disparando um aviso ao usuário caso verdadeiro.
 				if(name.equals("")) {
 					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Remover", JOptionPane.ERROR_MESSAGE);
 				}else {
 					try{
-						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=***");
 				
 						Statement stQuery = connection.createStatement();
 				
+						//Comando que habilita os updates no banco.
 						String query = "SET SQL_SAFE_UPDATES = 0";
 						stQuery.execute(query);
 						
 						String query2 = "DELETE FROM systemDB.championships WHERE name = '"+name+"'";
 						stQuery.execute(query2);
 						
+						//Aqui é restaurada a ordem dos ID's.
 						String query3 = "UPDATE systemDB.championships SET id = id-1";
 						stQuery.execute(query3);
+						
 						
 						String query4 = "SELECT id FROM systemDB.championships WHERE id=0";
 						stQuery.execute(query4);
 						
+						//Este trecho seta o primeiro id de 0 para 1 novamente.
 						String query5 = "UPDATE systemDB.championships SET id = 1 WHERE id = 0";
 						stQuery.execute(query5);
 				       
@@ -165,14 +165,16 @@ public class DeleteGame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 					try{
-						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=***");
 				
 						Statement stQuery = connection.createStatement();
 			
 						String query = "SET SQL_SAFE_UPDATES = 0";
 						
+						//São deletados todos os registros da tabela de campeonatos
 						String query2 = "DELETE FROM systemDB.championships";
 						
+						//O próximo campeonato registrado terá o ID = 1, restaurando a sequência.
 						String query3 = "ALTER TABLE systemDB.championships AUTO_INCREMENT = 1";
 						
 						stQuery.execute(query);
@@ -193,5 +195,14 @@ public class DeleteGame extends JFrame {
 		btnDeleteAll.setBounds(496, 296, 232, 36);
 		deleteGame.add(btnDeleteAll);
 		
+		setUndecorated(true);
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 738, 343);
+		deleteGame = new JPanel();
+		deleteGame.setBackground(SystemColor.inactiveCaptionBorder);
+		deleteGame.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(deleteGame);
+		deleteGame.setLayout(null);
 	}
 }

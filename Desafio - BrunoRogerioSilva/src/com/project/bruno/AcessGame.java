@@ -28,8 +28,14 @@ import javax.swing.JScrollPane;
 public class AcessGame extends JFrame {
 
 	/**
+	 * Este Frame possibilita a inserção de jogos aos campeonatos, estabelecendo a relação entre jogo e o seu respectivo campeonato
+	 * selecionado. É possível ver o calculo dos placares mínimos, máximos e dos recordes, porém ainda não está totalmente funcional.
 	 * 
+	 * @author Bruno Rogério da Silva
+	 * @version 1.0
 	 */
+	
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel acessPane;
 	private int xx,xy;
@@ -40,7 +46,7 @@ public class AcessGame extends JFrame {
 
 
 	/**
-	 * Launch the application.
+	 * Inicia a aplicação.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -56,7 +62,7 @@ public class AcessGame extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria o Frame.
 	 */
 	public AcessGame() {
 		setUndecorated(true);
@@ -79,13 +85,6 @@ public class AcessGame extends JFrame {
 				AcessGame.this.setLocation(x - xx, y - xy);
 			}
 		});
-		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 743, 732);
-		acessPane = new JPanel();
-		acessPane.setBackground(SystemColor.inactiveCaptionBorder);
-		acessPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(acessPane);
 		
 		JButton btnExit = new JButton("X");
 		btnExit.setBounds(675, 0, 59, 36);
@@ -128,6 +127,7 @@ public class AcessGame extends JFrame {
 				
 				String GameQuery = "";
 				
+				//Verifica se o campo de texto está vazio, disparando um aviso ao usuário caso verdadeiro.
 				if(GameName.equals("")) {
 					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Campeonato", JOptionPane.ERROR_MESSAGE);
 				}else {
@@ -136,6 +136,7 @@ public class AcessGame extends JFrame {
 				
 						Statement stQuery = connection.createStatement();
 						
+						//Analisa se o nome informado consta no banco, caso verdadeiro o campeonato e selecionado, caso falso um aviso é disparado.
 						String queryGameName = "SELECT name FROM systemDB.championships WHERE name='"+GameName+"'";
 						ResultSet rs2 = stQuery.executeQuery(queryGameName);
 
@@ -144,8 +145,10 @@ public class AcessGame extends JFrame {
 						}
 						
 						if(GameQuery.equals(GameName)) {
+							//Aviso de sucesso
 							JOptionPane.showMessageDialog(null, "O campeonato foi selecionado!", "Campeonato", JOptionPane.INFORMATION_MESSAGE);
 						}else {
+							//Aviso de falha
 							JOptionPane.showMessageDialog(null, "O campeonato não foi encontrado.", "Campeonato", JOptionPane.ERROR_MESSAGE);
 					}
 			
@@ -191,6 +194,8 @@ public class AcessGame extends JFrame {
 				float scoreFlt = Float.parseFloat(ScoreNum);
 				
 				if(ScoreNum.equals("")) {
+					//Confere se o placar informado atende ao padrão numérico requerido, caso falso um aviso de erro é emitido e o usuário deve
+					//tentar novamente.
 					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Adicionar Jogo", JOptionPane.ERROR_MESSAGE);
 				}else if((scoreFlt < 1000) && (scoreFlt > 0.0f) && (scoreFlt % 1.0f == 0.0f)) {	
 						try {
@@ -198,6 +203,7 @@ public class AcessGame extends JFrame {
 						
 							Statement stQuery = connection.createStatement();
 						
+							//Busca o ID do campeonato informado na caixa de texto do botão de acesso ao campeonato.
 							String champID = "SELECT id FROM systemDB.championships WHERE name='"+GameName+"'";
 							ResultSet rs2 = stQuery.executeQuery(champID);
 
@@ -208,6 +214,8 @@ public class AcessGame extends JFrame {
 							int champINT = Integer.parseInt(champID);
 							int scoreInt = (int) scoreFlt;
 						
+							//Atribui o placar informado a tabela do placar no banco e o ID do campeonato que foi informado anteriromente à foreign key
+							//da tabela do placar.
 							String query = "INSERT INTO systemDB.games (score, championships_id) VALUES"
 									+ "('"+scoreInt+"','"+champINT+"')";
 						
@@ -217,6 +225,7 @@ public class AcessGame extends JFrame {
 							e1.printStackTrace();
 						}
 				    	}else {
+				    		//Aviso de erro mencionado anteriormente
 				    		JOptionPane.showMessageDialog(null, "Formato inválido.", "Adicionar Jogo", JOptionPane.ERROR_MESSAGE);
 				    	}
 						entryCamp2.setText("");
@@ -259,6 +268,7 @@ public class AcessGame extends JFrame {
 			
 					Statement stQuery = connection.createStatement();
 					
+					//Verifica se há registros na tabela de jogo.
 					ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.games");
 					int row = 0;
 			        while(rs.next()){
@@ -266,8 +276,10 @@ public class AcessGame extends JFrame {
 			        }
 			        
 			        if(row==0) {
+			        	//Mensagem de erro caso não existam jogos na tabela.
 			        	JOptionPane.showMessageDialog(null, "Não há jogos para mostrar.", "Tabela de Jogos", JOptionPane.ERROR_MESSAGE);
 			        }else {
+			        	//Busca o ID do campeonato informado anteriormente.	
 			        		ResultSet rs1 = stQuery.executeQuery("SELECT id FROM systemDB.championships WHERE name='"+GameName+"'");
 			        		while(rs1.next()) {
 			        			idChamps = rs1.getString("id");
@@ -282,6 +294,8 @@ public class AcessGame extends JFrame {
 			    			
 			    			idMatchInt = Integer.parseInt(idMatch);
 			    	        
+			    			//Trecho de código que deve calcular, adicionar e apresentar o placar, minimos e maximos da temporada e os recordes com base
+			    			//no ID do campeonato e na foreign key da tabela de jogos que a referencia. Porém ainda não está corrigido.
 			    			for(int i=1; i<=row; i++) {
 			    				String query2 = "SELECT championships.name, games.score from systemDB.championships left join systemDB.games on championships_id ='"+idMatchInt+"'";
 			    				ResultSet rs3 = stQuery.executeQuery(query2);
@@ -302,7 +316,7 @@ public class AcessGame extends JFrame {
 			    						maxRecord++;
 			    					}
 			    				}
-			    				
+			    				//Apresenta as informações em um JTextArea.
 			    				textArea.append("Campeonato: " + name + " | Pontuação: " + score + " | Mínimo da Temporada: " + minSeasonInt + " | Máximo da Temporada: "
 			    				+ maxSeasonInt + " | Quebra recorde min. "+ minRecord + " | Quebra recorde max. "+ maxRecord +"\n");
 			    			}
@@ -325,5 +339,12 @@ public class AcessGame extends JFrame {
 		tableTitle.setFont(new Font("Tahoma", Font.BOLD, 21));
 		tableTitle.setBounds(10, 427, 315, 26);
 		acessPane.add(tableTitle);
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 743, 732);
+		acessPane = new JPanel();
+		acessPane.setBackground(SystemColor.inactiveCaptionBorder);
+		acessPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(acessPane);
 	}
 }

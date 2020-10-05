@@ -25,15 +25,19 @@ import javax.swing.JTextField;
 public class AddGame extends JFrame {
 
 	/**
+	 * Classe responsável por adicionar novos campeonatos ao banco de dados.
 	 * 
+	 * @author Bruno Rogério da Silva
+	 * @version 1.0
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel addGamePane;
 	private int xx,xy;
 	private JTextField entryCamp;
 
 	/**
-	 * Launch the application.
+	 * Inicia a aplicação.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -50,7 +54,7 @@ public class AddGame extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria o Frame.
 	 */
 	public AddGame() {
 		setBackground(SystemColor.inactiveCaptionBorder);
@@ -76,14 +80,6 @@ public class AddGame extends JFrame {
 				AddGame.this.setLocation(x - xx, y - xy);
 			}
 		});
-		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 704, 343);
-		addGamePane = new JPanel();
-		addGamePane.setBackground(SystemColor.inactiveCaptionBorder);
-		addGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(addGamePane);
-		addGamePane.setLayout(null);
 		
 		JLabel title = new JLabel("Adicionar um novo campeonato");
 		title.setFont(new Font("Tahoma", Font.BOLD, 21));
@@ -122,14 +118,16 @@ public class AddGame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String name = entryCamp.getText();
 				
+				//Verifica se o campo de texto está vazio, disparando um aviso ao usuário caso verdadeiro.
 				if(name.equals("")) {
 					JOptionPane.showMessageDialog(null, "Por favor, preencha o campo acima.", "Cadastro", JOptionPane.ERROR_MESSAGE);
 				}else {
 					try{
-						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+						Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=***");
 				
 						Statement stQuery = connection.createStatement();
 				
+						//Realiza o comando de inserção de novos nomes a tabela de campeonatos.
 						String query = "INSERT INTO systemDB.championships (name) VALUES"
 								+ "('"+name+"');";
 				
@@ -150,5 +148,13 @@ public class AddGame extends JFrame {
 		btnAddGame.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAddGame.setBounds(10, 251, 244, 42);
 		addGamePane.add(btnAddGame);
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 704, 343);
+		addGamePane = new JPanel();
+		addGamePane.setBackground(SystemColor.inactiveCaptionBorder);
+		addGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(addGamePane);
+		addGamePane.setLayout(null);
 	}
 }

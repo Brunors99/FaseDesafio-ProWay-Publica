@@ -23,14 +23,3 @@ ALTER TABLE systemDB.games ADD CONSTRAINT championships_id FOREIGN KEY (champion
 SET SQL_SAFE_UPDATES = 0;
 
 SET GLOBAL TIME_ZONE = '+3:00';
-
-/*-------------------------------------------------------------------------------------------------------------*/
-
-
-SELECT championships_id FROM systemDB.games JOIN championships ON games.championships_id = championships.id;
-
-
-
-
-
-

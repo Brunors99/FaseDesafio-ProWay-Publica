@@ -28,14 +28,18 @@ import java.awt.SystemColor;
 public class ListGame extends JFrame {
 
 	/**
+	 * Classe responsável por listar todos os campeonatos existentes no banco de dados.
 	 * 
+	 * @author Bruno Rogério da Silva
+	 * @version 1.0
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel listGamePane;
 	private int xx,xy;
 
 	/**
-	 * Launch the application.
+	 * Inicia a aplicação.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -51,7 +55,7 @@ public class ListGame extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria o Frame.
 	 */
 	public ListGame() {
 		addMouseListener(new MouseAdapter() {
@@ -72,14 +76,6 @@ public class ListGame extends JFrame {
 				ListGame.this.setLocation(x - xx, y - xy);
 			}
 		});
-		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 589, 414);
-		listGamePane = new JPanel();
-		listGamePane.setBackground(SystemColor.inactiveCaptionBorder);
-		listGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(listGamePane);
-		listGamePane.setLayout(null);
 		
 		JButton btnExit = new JButton("X");
 		btnExit.addActionListener(new ActionListener() {
@@ -114,12 +110,14 @@ public class ListGame extends JFrame {
 				
 				Statement stQuery = connection.createStatement();
 		
+				//Comando de consulta ao banco de dados para obter o número de registros.
 				ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
 				int row = 0;
 		        while(rs.next()){
 		            row = rs.getInt("COUNT(*)");                              
 		        }
 		        
+		        //Comando de consulta ao banco para a obtenção dos nomes dos campeonatos cadastrados.
 				for(int i=1; i<=row; i++) {
 					String query = "SELECT name FROM systemDB.championships WHERE id='"+i+"'";
 					ResultSet rs2 = stQuery.executeQuery(query);
@@ -128,7 +126,7 @@ public class ListGame extends JFrame {
 					while(rs2.next()) {
 						name = rs2.getString("name");
 					}
-					
+					//Neste textArea os campeonatos são apresentados.
 					textList.append(name + "\n");
 				}
 				
@@ -143,5 +141,13 @@ public class ListGame extends JFrame {
 		scrollList.setViewportView(textList);
 		setUndecorated(true);
 		setResizable(false);
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 589, 414);
+		listGamePane = new JPanel();
+		listGamePane.setBackground(SystemColor.inactiveCaptionBorder);
+		listGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(listGamePane);
+		listGamePane.setLayout(null);
 	}
 }

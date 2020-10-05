@@ -26,12 +26,18 @@ import java.awt.SystemColor;
 public class Main extends JFrame {
 
 	/**
+	 * Classe principal, a partir deste Frame é possível acessar todas as funcionalidades do sistema.
 	 * 
+	 * @author Bruno Rogério da Silva
+	 * @version 1.0
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel mainPane;
 	private int xx,xy;
 	
+	/**
+	 * Inicia a aplicação.
+	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -47,11 +53,13 @@ public class Main extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria o Frame.
 	 */
 	public Main() {
 		setUndecorated(true);
-		/*---------------------------------------- Torna possivel a movimentacao do JFrame ----------------------------------------*/
+		/**
+		 * Torna possível a movimentação do Frame.
+		 */
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -70,16 +78,6 @@ public class Main extends JFrame {
 				Main.this.setLocation(x - xx, y - xy);
 			}
 		});
-		/*------------------------------------------------------------------------*/
-		setFont(new Font("Arial", Font.PLAIN, 12));
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 918, 563);
-		mainPane = new JPanel();
-		mainPane.setBackground(SystemColor.inactiveCaptionBorder);
-		mainPane.setBorder(null);
-		setContentPane(mainPane);
-		mainPane.setLayout(null);
 		
 		JPanel imagePresentation = new JPanel();
 		imagePresentation.setForeground(Color.WHITE);
@@ -88,11 +86,10 @@ public class Main extends JFrame {
 		imagePresentation.setBounds(0, 0, 363, 551);
 		mainPane.add(imagePresentation);
 		
+		
 		JLabel image = new JLabel("");
 		image.setIcon(new ImageIcon(Main.class.getResource("/images/basketball-court.jpg")));
 		imagePresentation.add(image);
-		
-		/*------------------------------------------------------------------------*/
 		
 		JLabel title = new JLabel("Seja Bem-Vindo ao ScoreBasket!");
 		title.setFont(new Font("Tahoma", Font.BOLD, 21));
@@ -104,7 +101,9 @@ public class Main extends JFrame {
 		subTitle.setBounds(400, 68, 415, 34);
 		mainPane.add(subTitle);
 		
-		/*---------------------------------------- Botao para a adicao de campeonatos ----------------------------------------*/
+		/**
+		 * Botão para a tela de adição de campeonatos.
+		 */
 		
 		JButton btnNewGame = new JButton("Adicione um novo campeonato");
 		btnNewGame.addActionListener(new ActionListener() {
@@ -123,17 +122,21 @@ public class Main extends JFrame {
 		btnNewGame.setBounds(400, 200, 244, 42);
 		mainPane.add(btnNewGame);
 		
-		/*------------------------------------------------------------------------*/
+		/**
+		 * Botão para a tela de listagem de campeonatos.
+		 */
 		
 		JButton btnListOfGames = new JButton("Listar os campeonatos");
 		btnListOfGames.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+					//Estabelecimento da conexão com o banco de dados.
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=***");
 					
 					Statement stQuery = connection.createStatement();
-			
+					
+					//Comando para seleção do número de colunas da tabela de campeonatos, caso não haja nenhum campeonato cadastrado o frame não é acionado.
 					ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
 					int row = 0;
 			        while(rs.next()){
@@ -141,6 +144,7 @@ public class Main extends JFrame {
 			        }
 					
 					if(row==0) {
+						//É informado que não há campeonatos para mostrar.
 						JOptionPane.showMessageDialog(null, "Não existem campeonatos cadastrados.", "Lista de Campeonatos", JOptionPane.ERROR_MESSAGE);
 					}else {
 						ListGame listGame = new ListGame();
@@ -160,14 +164,20 @@ public class Main extends JFrame {
 		btnListOfGames.setBounds(400, 279, 244, 42);
 		mainPane.add(btnListOfGames);
 		
+		/**
+		 * Botão para a tela de acesso à um campeonato.
+		 */
+		
 		JButton btnModifyGame = new JButton("Acessar um campeonato");
 		btnModifyGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+					//Estabelecimento da conexão com o banco de dados.
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=***");
 					
 					Statement stQuery = connection.createStatement();
 			
+					//Comando para seleção do número de colunas da tabela de campeonatos, caso não haja nenhum campeonato cadastrado o frame não é acionado.
 					ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
 					int row = 0;
 			        while(rs.next()){
@@ -175,6 +185,7 @@ public class Main extends JFrame {
 			        }
 					
 					if(row==0) {
+						//É informado que não há campeonatos para acessar.
 						JOptionPane.showMessageDialog(null, "Não existe campeonato algum para acessar.", "Acessar Campeonatos", JOptionPane.ERROR_MESSAGE);
 					}else {
 						AcessGame acessGame = new AcessGame();
@@ -197,10 +208,12 @@ public class Main extends JFrame {
 		btnDeleteGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=CarroSynthwave2101");
+					//Estabelecimento da conexão com o banco de dados.
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=***");
 					
 					Statement stQuery = connection.createStatement();
 			
+					//Comando para seleção do número de colunas da tabela de campeonatos, caso não haja nenhum campeonato cadastrado o frame não é acionado.
 					ResultSet rs = stQuery.executeQuery("SELECT COUNT(*) FROM systemDB.championships");
 					int row = 0;
 			        while(rs.next()){
@@ -208,6 +221,7 @@ public class Main extends JFrame {
 			        }
 					
 					if(row==0) {
+						//É informado que não há campeonatos para deletar.
 						JOptionPane.showMessageDialog(null, "Não existe campeonato algum para apagar.", "Apagar Campeonatos", JOptionPane.ERROR_MESSAGE);
 					}else {
 						DeleteGame deleteGame = new DeleteGame();
@@ -225,6 +239,10 @@ public class Main extends JFrame {
 		btnDeleteGame.setBackground(SystemColor.textHighlight);
 		btnDeleteGame.setBounds(400, 438, 244, 42);
 		mainPane.add(btnDeleteGame);
+		
+		/**
+		 * Botão que fecha o Frame.
+		 */
 		
 		JButton btnExit = new JButton("X");
 		btnExit.addActionListener(new ActionListener() {
@@ -244,5 +262,15 @@ public class Main extends JFrame {
 		version.setHorizontalAlignment(SwingConstants.RIGHT);
 		version.setBounds(855, 538, 53, 14);
 		mainPane.add(version);
+		
+		setFont(new Font("Arial", Font.PLAIN, 12));
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 918, 563);
+		mainPane = new JPanel();
+		mainPane.setBackground(SystemColor.inactiveCaptionBorder);
+		mainPane.setBorder(null);
+		setContentPane(mainPane);
+		mainPane.setLayout(null);
 	}
 }
